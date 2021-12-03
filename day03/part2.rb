@@ -9,26 +9,18 @@ rows      = input.split("\n")
 numbers = rows.map { |i| i.chars.map(&:to_i) }
 col_size = numbers.first.size
 
-ogr =
+def reduce(numbers)
+  col_size = numbers.first.size
   (0..(col_size - 1)).reduce(numbers) do |current, n|
-    if current.size > 1
-      size = (current.size + 1) / 2
-      value = current.map { |row| row[n] }.sum < size ? 0 : 1
-      current.select { |row| row[n] == value }
-    else
-      current
-    end
-  end.first.join.to_i(2)
+    break current if current.size == 1
 
-co2 =
-  (0..(col_size - 1)).reduce(numbers) do |current, n|
-    if current.size > 1
-      size = (current.size + 1) / 2
-      value = current.map { |row| row[n] }.sum < size ? 1 : 0
-      current.select { |row| row[n] == value }
-    else
-      current
-    end
+    size = (current.size + 1) / 2
+    value = yield current.map { |row| row[n] }.sum < size
+    current.select { |row| row[n] == value }
   end.first.join.to_i(2)
+end
+
+ogr = reduce(numbers) { |e| e ? 0 : 1 }
+co2 = reduce(numbers) { |e| e ? 1 : 0 }
 
 puts "#{ogr} * #{co2} = #{ogr * co2}"
