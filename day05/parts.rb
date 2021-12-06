@@ -21,14 +21,6 @@ class Fc
     @fn_common == 1 || @fn_common == -1
   end
 
-  def x
-    [@x1, @x2]
-  end
-
-  def y
-    [@x1, @x2]
-  end
-
   def value_at(x)
     (x - @x1) * @fn_common + @y1
   end
@@ -41,10 +33,6 @@ class Fc
       min, max = [@x1, @x2].minmax
       (min..max).map { |x| [x, value_at(x)] }
     end
-  end
-
-  def to_s
-    "[#{@x1}, #{@y1}] -> [#{@x2}, #{@y2}]"
   end
 end
 
